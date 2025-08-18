@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">SymptoTrack</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="registrarse">Registrarme</string>
+    <string name="Ingrese_usuairo">Ingrese Usuario</string>
+    <string name="ingresar_contrasena">Ingrese Contraseña</string>
+    <string name="titulo_registrar">Registro</string>"
+
+    <string name="hint_nombre">Nombre</string>
+    <string name="hint_apellido">Apellido</string>
+    <string name="hint_celular">Número de celular</string>
+    <string name="hint_usuario_correo">Usuario o correo</string>
+    <string name="hint_contrasena">Contraseña</string>
+    <string name="hint_confirmar_contrasena">Confirmar contraseña</string>
+    <string name="btn_registrar">Registrar</string>
+
+    <string name="error_nombre">El nombre es obligatorio</string>
+    <string name="error_apellido">El apellido es obligatorio</string>
+    <string name="error_celular_obligatorio">El celular es obligatorio</string>
+    <string name="error_celular_invalido">Debe tener 10 dígitos</string>
+    <string name="error_usuario_correo_obligatorio">Usuario o correo es obligatorio</string>
+    <string name="error_usuario_correo_invalido">Ingresa un correo válido o un usuario (mín. 4, solo letras/números . _ -)</string>
+    <string name="error_contrasena_obligatoria">La contraseña es obligatoria</string>
+    <string name="error_contrasena_corta">Mínimo 6 caracteres</string>
+    <string name="error_confirmar_contrasena">Confirma tu contraseña</string>
+    <string name="error_contrasena_no_coincide">Las contraseñas no coinciden</string>
+
+    <string name="msg_registro_valido">Registro válido ✅</string>
+
+    //STRINGS DE LA PANTALLA INICIO
+    <string name="titulo_inicio">Inicio</string>
+    <string name="registrar_sintoma">Registrar Sintoma</string>
+    <string name="historial">Ver historial</string>
+    <string name="inicio_saludo">Buenas buenas ¿Qué haremos hoy?</string>
+
+    <!-- Registro de síntomas -->
+    <string name="titulo_registro_sintoma">Registro diario de síntomas</string>
+    <string name="hint_nombre_sintoma">Nombre del síntoma</string>
+    <string name="label_intensidad">Intensidad (0–10)</string>
+    <string name="hint_fecha">Fecha</string>
+    <string name="hint_seleccionar_fecha">Selecciona la fecha</string>
+    <string name="hint_notas">Notas</string>
+    <string name="btn_guardar">Guardar</string>
+
+    <!-- DatePicker -->
+    <string name="sel_fecha_title">Selecciona una fecha</string>
+
+    <!-- Mensajes / errores  -->
+    <string name="error_campo_obligatorio">Este campo es obligatorio</string>
+    <string name="msg_guardado_ok">Registro listo ✅</string>
+
+
+</resources>

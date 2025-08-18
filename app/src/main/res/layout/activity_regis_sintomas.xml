@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:background="@drawable/fondo_sintomas"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/titulo_registro_sintoma"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="30dp"
+            android:textColor="@color/red"/>
+
+        <!-- Nombre -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_nombre_sintoma"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Intensidad -->
+        <TextView
+            android:id="@+id/tv_intensidad_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_intensidad"
+            android:layout_marginTop="16dp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_intensidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/label_intensidad"
+            app:valueFrom="0"
+            app:valueTo="10"
+            app:stepSize="1"
+            app:value="0" />
+
+        <!-- Fecha (abre DatePicker) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:endIconMode="custom"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:hint="@string/hint_seleccionar_fecha" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Notas -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_notas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_notas"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_notas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:gravity="top|start" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Guardar -->
+        <Button
+            android:id="@+id/btn_guardar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_guardar"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>
