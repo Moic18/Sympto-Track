@@ -50,10 +50,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/label_intensidad"
-            app:valueFrom="0"
-            app:valueTo="10"
+            android:valueFrom="0"
+            android:valueTo="10"
             android:stepSize="1"
-            app:value="0" />
+            android:value="0" />
+
 
         <!-- Fecha (abre DatePicker) -->
         <com.google.android.material.textfield.TextInputLayout
