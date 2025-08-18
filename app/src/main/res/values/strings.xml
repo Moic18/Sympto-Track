@@ -4,9 +4,9 @@
     <string name="contrasena">Contraseña</string>
     <string name="ingresar">Ingresar</string>
     <string name="registrarse">Registrarme</string>
-    <string name="Ingrese_usuairo">Ingrese Usuario</string>
+    <string name="Ingrese_usuario">Ingrese Usuario</string>
     <string name="ingresar_contrasena">Ingrese Contraseña</string>
-    <string name="titulo_registrar">Registro</string>"
+    <string name="titulo_registrar">Registro</string>
 
     <string name="hint_nombre">Nombre</string>
     <string name="hint_apellido">Apellido</string>
@@ -29,7 +29,7 @@
 
     <string name="msg_registro_valido">Registro válido ✅</string>
 
-    //STRINGS DE LA PANTALLA INICIO
+    <!-- STRINGS DE LA PANTALLA INICIO -->
     <string name="titulo_inicio">Inicio</string>
     <string name="registrar_sintoma">Registrar Sintoma</string>
     <string name="historial">Ver historial</string>
