@@ -52,7 +52,7 @@
             android:contentDescription="@string/label_intensidad"
             app:valueFrom="0"
             app:valueTo="10"
-            app:stepSize="1"
+            android:stepSize="1"
             app:value="0" />
 
         <!-- Fecha (abre DatePicker) -->
