@@ -41,11 +41,14 @@ public class Regis_sintomas extends AppCompatActivity {
             return insets;
         });
 
-
         bindViews();
+
+        // NEW: preseleccionar fecha de hoy en el campo
+        Calendar hoy = Calendar.getInstance();
+        etFecha.setText(df.format(hoy.getTime()));
+
         setupFechaPicker();
         btnGuardar.setOnClickListener(v -> guardar());
-
     }
 
     private void bindViews() {
@@ -62,24 +65,24 @@ public class Regis_sintomas extends AppCompatActivity {
     }
 
     private void setupFechaPicker() {
-        // DatePicker (selección única)
+        // DatePicker (selección única), selección inicial hoy en UTC
         final MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(getString(R.string.sel_fecha_title))
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
 
-        // abrir al tocar el campo
+        // abrir al tocar el campo o el layout
         View.OnClickListener open = v -> picker.show(getSupportFragmentManager(), "fecha");
         etFecha.setOnClickListener(open);
         tilFecha.setOnClickListener(open);
 
         // obtener la fecha seleccionada
         picker.addOnPositiveButtonClickListener(selection -> {
-            // selection llega en UTC (ms). Lo pasamos a fecha local con el formato deseado.
+            // selection llega en UTC (ms). Convertimos a fecha local y formateamos.
             Calendar calUtc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             calUtc.setTimeInMillis(selection);
 
-            Calendar calLocal = Calendar.getInstance(); // zona horaria local
+            Calendar calLocal = Calendar.getInstance();
             calLocal.set(
                     calUtc.get(Calendar.YEAR),
                     calUtc.get(Calendar.MONTH),
@@ -115,11 +118,8 @@ public class Regis_sintomas extends AppCompatActivity {
 
         if (!ok) return;
 
-        // Aquí puedes enviar a tu API (Retrofit) o guardar local (Room).
-        // Ejemplo rápido:
         String resumen = "Síntoma: " + nombre + " | Intensidad: " + intensidad +
                 " | Fecha: " + fecha + " | Notas: " + notas;
         Toast.makeText(this, getString(R.string.msg_guardado_ok) + "\n" + resumen, Toast.LENGTH_SHORT).show();
     }
-
 }

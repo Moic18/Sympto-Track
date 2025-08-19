@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         String contrasena = txt_contrasena.getText() != null ? txt_contrasena.getText().toString().trim() : "";
 
         if ("prueba".equals(usuario) && "0000".equals(contrasena)) {
-            Intent intent = new Intent(MainActivity.this, Regis_sintomas.class);
+            Intent intent = new Intent(MainActivity.this, Inicio.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();

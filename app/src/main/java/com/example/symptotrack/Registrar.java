@@ -1,5 +1,6 @@
 package com.example.symptotrack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -39,6 +40,8 @@ public class Registrar extends AppCompatActivity {
             @Override public void onClick(View v) {
                 if (validarFormulario()) {
                     Toast.makeText(Registrar.this, getString(R.string.msg_registro_valido), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Registrar.this, MainActivity.class);
+                    startActivity(intent);
                 }
             }
         });

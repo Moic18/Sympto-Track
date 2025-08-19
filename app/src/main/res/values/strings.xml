@@ -6,7 +6,7 @@
     <string name="registrarse">Registrarme</string>
     <string name="Ingrese_usuario">Ingrese Usuario</string>
     <string name="ingresar_contrasena">Ingrese Contraseña</string>
-    <string name="titulo_registrar">Registro</string>
+    <string name="titulo_registrar">Registro de usuario</string>
 
     <string name="hint_nombre">Nombre</string>
     <string name="hint_apellido">Apellido</string>
@@ -50,6 +50,11 @@
     <!-- Mensajes / errores  -->
     <string name="error_campo_obligatorio">Este campo es obligatorio</string>
     <string name="msg_guardado_ok">Registro listo ✅</string>
+
+    <string name="historial_title">Historial</string>
+    <string name="historial_buscar_hint">Buscar en notas o nombre…</string>
+    <string name="historial_btn_rango_fechas">Rango de fechas</string>
+    <string name="historial_btn_limpiar">Limpiar</string>
 
 
 </resources>

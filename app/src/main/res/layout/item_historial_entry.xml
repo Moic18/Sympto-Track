@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_historial"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_nombre_sintoma"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Migraña"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_intensidad"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Intensidad 7" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_nota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dolor en sien derecha, mejoró con descanso."
+            android:layout_marginTop="6dp"/>
+
+        <TextView
+            android:id="@+id/tv_hora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="09:35"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            android:textColor="#777777"/>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
