@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 LoginResponse data = resp.body().data;
-                new com.example.symptotrack.auth.SessionManager(MainActivity.this)
+                new com.example.symptotrack.session.SessionManager(MainActivity.this)
                         .saveLogin(data.role, data.id);
 
                 if ("doctor".equalsIgnoreCase(data.role)) {

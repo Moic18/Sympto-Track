@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.symptotrack.R;
-import com.example.symptotrack.auth.SessionManager;
+import com.example.symptotrack.session.SessionManager;
 import com.example.symptotrack.net.ApiClient;
 import com.example.symptotrack.net.ApiService;
 import com.example.symptotrack.net.dto.*;

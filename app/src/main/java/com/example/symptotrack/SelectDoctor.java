@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.symptotrack.auth.SessionManager;
+import com.example.symptotrack.session.SessionManager;
 import com.example.symptotrack.doctor.DoctorAdapter;
 import com.example.symptotrack.doctor.DoctorItem;
 import com.example.symptotrack.net.ApiClient;
