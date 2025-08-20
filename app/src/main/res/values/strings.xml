@@ -56,5 +56,15 @@
     <string name="historial_btn_rango_fechas">Rango de fechas</string>
     <string name="historial_btn_limpiar">Limpiar</string>
 
+    <string name="agregar">Agregar</string>
+    <string name="doctor">Doctor</string>
+    <string name="buscar_usuario">Buscar usuario</string>
+    <string name="buscar_doctor">Buscar doctor</string>
+    <string name="solo_activos">Solo activos</string>
+    <string name="sin_resultados">Sin resultados</string>
+    <string name="activo">Activo</string>
+    <string name="panel_administrador">Panel administrador</string>
+
+
 
 </resources>

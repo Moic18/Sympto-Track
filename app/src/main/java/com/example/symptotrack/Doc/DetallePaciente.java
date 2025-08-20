@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class DetallePaciente extends AppCompatActivity {
 
-    private TextView tvNombre, tvInfo;
+    private TextView tvNombre, tvInfo, tvEmail, tvUsername;
     private ImageView imgLogo;
     private RecyclerView rvNotas;
     private NotesAdapter adapter;
@@ -75,13 +75,14 @@ public class DetallePaciente extends AppCompatActivity {
                     return;
                 }
                 PatientDetailDto d = resp.body().data;
-                tvNombre.setText(d.patient.first_name + " " + d.patient.last_name);
-                tvInfo.setText((d.patient.email != null ? d.patient.email : "-") + " · " +
-                        (d.patient.phone != null ? d.patient.phone : "-"));
+                tvNombre.setText(d.first_name + " " + d.last_name);
+                tvEmail.setText(d.email);
+                tvUsername.setText(d.username);
+
 
                 List<NoteItem> notes = new ArrayList<>();
                 if (d.notes != null) {
-                    for (PatientDetailDto.Note n : d.notes) {
+                    for (PatientDetailDto.NoteDto n : d.notes) {
                         notes.add(new NoteItem(n.fecha, n.note != null ? n.note : ""));
                     }
                 }

@@ -6,8 +6,5 @@ public class DoctorDto {
     public String last_name;
     public String email;
     public String username;
-
-    public String nombreCompleto() {
-        return (first_name == null ? "" : first_name) + " " + (last_name == null ? "" : last_name);
-    }
+    public boolean is_active;
 }

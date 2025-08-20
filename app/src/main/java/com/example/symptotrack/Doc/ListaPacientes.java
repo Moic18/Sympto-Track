@@ -54,21 +54,25 @@ public class ListaPacientes extends AppCompatActivity {
             return;
         }
         int doctorId = (int) session.getId();
-        api.listPatientsForDoctor(doctorId).enqueue(new Callback<ApiResponse<List<PatientSummaryDto>>>() {
-            @Override public void onResponse(Call<ApiResponse<List<PatientSummaryDto>>> call, Response<ApiResponse<List<PatientSummaryDto>>> resp) {
-                if (!resp.isSuccessful() || resp.body()==null || !resp.body().ok) {
-                    Toast.makeText(ListaPacientes.this, "No se pudieron cargar pacientes", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                List<PatientItem> ui = new ArrayList<>();
-                for (PatientSummaryDto s : resp.body().data) {
-                    ui.add(new PatientItem(s.patient_id, s.patient_fullname, s.last_shared_date));
-                }
-                adapter.submit(ui);
-            }
-            @Override public void onFailure(Call<ApiResponse<List<PatientSummaryDto>>> call, Throwable t) {
-                Toast.makeText(ListaPacientes.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        ApiService api = ApiClient.get().create(ApiService.class);
+        api.listPatientsForDoctor(doctorId)
+                .enqueue(new retrofit2.Callback<ApiResponse<java.util.List<PatientSummaryDto>>>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call,
+                                           retrofit2.Response<ApiResponse<java.util.List<PatientSummaryDto>>> resp) {
+                        if (!resp.isSuccessful() || resp.body()==null || !resp.body().ok) {
+                            // manejar error...
+                            return;
+                        }
+                        java.util.List<PatientSummaryDto> lista = resp.body().data;
+                        // TODO: pasar 'lista' a tu adapter (RecyclerView)
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call, Throwable t) {
+                        // manejar fallo de red...
+                    }
+                });
+
     }
 }
