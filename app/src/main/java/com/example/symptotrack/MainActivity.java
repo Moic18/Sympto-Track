@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
                 new com.example.symptotrack.auth.SessionManager(MainActivity.this)
                         .saveLogin(data.role, data.id);
 
-                Intent next = "doctor".equalsIgnoreCase(data.role)
-                        ? new Intent(MainActivity.this, com.example.symptotrack.doctor.Vista_doctor.class)
-                        : new Intent(MainActivity.this, Inicio.class);
-                startActivity(next);
-                finish();
+                if ("doctor".equalsIgnoreCase(data.role)) {
+                    startActivity(new Intent(MainActivity.this, com.example.symptotrack.doctor.Vista_doctor.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, Inicio.class));
+                }
             }
             @Override public void onFailure(Call<ApiResponse<LoginResponse>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
