@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.example.symptotrack.Doctor.Vista_doctor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
         if ("prueba".equals(usuario) && "0000".equals(contrasena)) {
             Intent intent = new Intent(MainActivity.this, Inicio.class);
+            startActivity(intent);
+        } else if ("doctor".equals(usuario) && "0000".equals(contrasena)) {
+            Intent intent = new Intent(MainActivity.this, Vista_doctor.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
