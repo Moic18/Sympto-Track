@@ -16,10 +16,10 @@
         android:theme="@style/Theme.SymptoTrack"
         tools:targetApi="31">
         <activity
-            android:name=".doctor.DetallePaciente"
+            android:name=".Doc.DetallePaciente"
             android:exported="false" />
         <activity
-            android:name=".doctor.ListaPacientes"
+            android:name=".Doc.ListaPacientes"
             android:exported="false" />
         <activity
             android:name=".doctor.Vista_doctor"
