@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.symptotrack.net.ApiClient;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,6 +39,8 @@ public class Regis_sintomas extends AppCompatActivity {
 
     private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
+    private ApiService api; // <--- instancia Retrofit
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,10 @@ public class Regis_sintomas extends AppCompatActivity {
 
         bindViews();
 
-        // NEW: preseleccionar fecha de hoy en el campo
+        // instancia Retrofit
+        api = ApiClient.get().create(ApiService.class); // <--- NEW
+
+        // preseleccionar fecha de hoy en el campo
         Calendar hoy = Calendar.getInstance();
         etFecha.setText(df.format(hoy.getTime()));
 
@@ -73,20 +79,16 @@ public class Regis_sintomas extends AppCompatActivity {
     }
 
     private void setupFechaPicker() {
-        // DatePicker (selección única), selección inicial hoy en UTC
         final MaterialDatePicker<Long> picker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText(getString(R.string.sel_fecha_title))
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
 
-        // abrir al tocar el campo o el layout
         View.OnClickListener open = v -> picker.show(getSupportFragmentManager(), "fecha");
         etFecha.setOnClickListener(open);
         tilFecha.setOnClickListener(open);
 
-        // obtener la fecha seleccionada
         picker.addOnPositiveButtonClickListener(selection -> {
-            // selection llega en UTC (ms). Convertimos a fecha local y formateamos.
             Calendar calUtc = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
             calUtc.setTimeInMillis(selection);
 
@@ -117,7 +119,7 @@ public class Regis_sintomas extends AppCompatActivity {
 
         String nombre = getText(etNombre);
         int intensidad = Math.round(sliderIntensidad.getValue());
-        String fecha = getText(etFecha); // "yyyy-MM-dd" si usas df así
+        String fecha = getText(etFecha);
         String notas = getText(etNotas);
 
         boolean ok = true;
@@ -127,19 +129,19 @@ public class Regis_sintomas extends AppCompatActivity {
 
         // user_id de la sesión
         SessionManager sm = new SessionManager(this);
-        if (!"user".equalsIgnoreCase(sm.role()) || sm.id() <= 0) {
+        if (!"user".equalsIgnoreCase(sm.role()) || sm.id() <= 0) {   // <--- requiere role() e id()
             Toast.makeText(this, "Inicia sesión como usuario para registrar", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Hora opcional: si no tienes, manda null
         SymptomRequest body = new SymptomRequest(
-                sm.id(), nombre, intensidad, fecha, null, notas
+                (int) sm.id(), nombre, intensidad, fecha, null, notas
         );
 
         btnGuardar.setEnabled(false);
 
-        ApiService.api().createSymptom(body).enqueue(new Callback<ApiResponse<CreatedId>>() {
+        // REEMPLAZA ApiService.api() por la instancia 'api'
+        api.createSymptom(body).enqueue(new Callback<ApiResponse<CreatedId>>() {
             @Override
             public void onResponse(Call<ApiResponse<CreatedId>> call, Response<ApiResponse<CreatedId>> response) {
                 btnGuardar.setEnabled(true);
@@ -153,7 +155,6 @@ public class Regis_sintomas extends AppCompatActivity {
                     return;
                 }
                 Toast.makeText(Regis_sintomas.this, "Síntoma guardado (id " + res.data.id + ")", Toast.LENGTH_SHORT).show();
-                // Opcional: limpiar campos
                 etNombre.setText("");
                 etNotas.setText("");
                 sliderIntensidad.setValue(0f);

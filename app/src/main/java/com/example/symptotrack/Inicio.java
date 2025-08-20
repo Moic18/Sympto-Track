@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Inicio extends AppCompatActivity {
 
-    private Button btn_regis_sintomas, btn_historial;
+    private Button btn_regis_sintomas, btn_historial, btnCompartirDoctor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class Inicio extends AppCompatActivity {
 
         btn_regis_sintomas = findViewById(R.id.btn_regis_sintomas);
         btn_historial = findViewById(R.id.btn_historial);
+        btnCompartirDoctor = findViewById(R.id.btn_compartir_doctor);
 
         btn_regis_sintomas.setOnClickListener(v -> {
             Intent intent = new Intent(Inicio.this, Regis_sintomas.class);
@@ -36,6 +37,10 @@ public class Inicio extends AppCompatActivity {
         btn_historial.setOnClickListener(v -> {
             Intent intent = new Intent(Inicio.this, Historial.class);
             startActivity(intent);
+        });
+
+        btnCompartirDoctor.setOnClickListener(v -> {
+            startActivity(new Intent(Inicio.this, SelectDoctor.class));
         });
 
     }

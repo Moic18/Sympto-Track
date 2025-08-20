@@ -1,4 +1,4 @@
-package com.example.symptotrack.Doctor;
+package com.example.symptotrack.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.symptotrack.Doc.ListaPacientes;
 import com.example.symptotrack.R;
 
 public class Vista_doctor extends AppCompatActivity {
@@ -29,8 +30,7 @@ public class Vista_doctor extends AppCompatActivity {
 
         btnVerPacientes = findViewById(R.id.btn_ver_pacientes);
         btnVerPacientes.setOnClickListener(v -> {
-            Intent intent = new Intent(Vista_doctor.this, ListaPacientes.class);
-            startActivity(intent);
+            startActivity(new Intent(Vista_doctor.this, ListaPacientes.class));
         });
     }
 }

@@ -14,11 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.example.symptotrack.Doctor.Vista_doctor;
 
 import com.example.symptotrack.net.ApiService;
 import com.example.symptotrack.net.dto.*;
 import com.example.symptotrack.session.SessionManager;
+import com.example.symptotrack.net.ApiClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,47 +96,28 @@ public class MainActivity extends AppCompatActivity {
         String usuario = txt_usuario.getText() != null ? txt_usuario.getText().toString().trim() : "";
         String contrasena = txt_contrasena.getText() != null ? txt_contrasena.getText().toString().trim() : "";
 
-        // role: si quieres que la API decida (primero user, luego doctor), envía null:
-        LoginRequest body = new LoginRequest(usuario, contrasena, null);
+        ApiService api = ApiClient.get().create(ApiService.class);
+        LoginRequest body = new LoginRequest(usuario, contrasena, null); // null = deja que el server detecte role
 
-        btn_ingresar.setEnabled(false);
-
-        ApiService.api().login(body).enqueue(new Callback<ApiResponse<LoginData>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<LoginData>> call, Response<ApiResponse<LoginData>> response) {
-                btn_ingresar.setEnabled(true);
-                if (!response.isSuccessful() || response.body() == null) {
-                    Toast.makeText(MainActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+        api.login(body).enqueue(new Callback<ApiResponse<LoginResponse>>() {
+            @Override public void onResponse(Call<ApiResponse<LoginResponse>> call, Response<ApiResponse<LoginResponse>> resp) {
+                if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok) {
+                    Toast.makeText(MainActivity.this, "Login fallido", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ApiResponse<LoginData> res = response.body();
-                if (!res.ok) {
-                    Toast.makeText(MainActivity.this, res.error != null ? res.error : "Credenciales inválidas", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                LoginResponse data = resp.body().data;
+                new com.example.symptotrack.auth.SessionManager(MainActivity.this)
+                        .saveLogin(data.role, data.id);
 
-                LoginData d = res.data;
-                // Guardar sesión
-                SessionManager sm = new SessionManager(MainActivity.this);
-                sm.save(d.role, d.id, d.first_name + " " + d.last_name);
-
-                // Navegar según rol
-                if ("user".equalsIgnoreCase(d.role)) {
-                    startActivity(new Intent(MainActivity.this, Inicio.class));
-                } else if ("doctor".equalsIgnoreCase(d.role)) {
-                    startActivity(new Intent(MainActivity.this, com.example.symptotrack.Doctor.Vista_doctor.class));
+                if ("doctor".equalsIgnoreCase(data.role)) {
+                    startActivity(new Intent(MainActivity.this, com.example.symptotrack.doctor.Vista_doctor.class));
                 } else {
-                    Toast.makeText(MainActivity.this, "Rol desconocido", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, Inicio.class));
                 }
             }
-
-            @Override
-            public void onFailure(Call<ApiResponse<LoginData>> call, Throwable t) {
-                btn_ingresar.setEnabled(false);
-                btn_ingresar.setEnabled(true);
-                Toast.makeText(MainActivity.this, "Fallo: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            @Override public void onFailure(Call<ApiResponse<LoginResponse>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
         });
     }
 

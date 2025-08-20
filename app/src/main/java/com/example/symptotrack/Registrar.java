@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.symptotrack.net.ApiClient;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -30,6 +31,7 @@ public class Registrar extends AppCompatActivity {
     private TextInputEditText etNombre, etApellido, etCelular, etUsuarioCorreo, etContrasena, etConfirmarContrasena;
     private Button btnRegistrarCuenta;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,7 @@ public class Registrar extends AppCompatActivity {
             return insets;
         });
 
+
         bindViews();
 
         btnRegistrarCuenta.setOnClickListener(v -> {
@@ -51,33 +54,31 @@ public class Registrar extends AppCompatActivity {
                 String usuarioCorreo = getText(etUsuarioCorreo); // email o username
                 String contrasena = getText(etContrasena);
 
-                RegisterUserRequest body = new RegisterUserRequest(
-                        nombre, apellido, celular, usuarioCorreo, contrasena
-                );
-
                 btnRegistrarCuenta.setEnabled(false);
 
-                ApiService.api().registerUser(body).enqueue(new Callback<ApiResponse<UserData>>() {
-                    @Override
-                    public void onResponse(Call<ApiResponse<UserData>> call, Response<ApiResponse<UserData>> response) {
-                        btnRegistrarCuenta.setEnabled(true);
-                        if (!response.isSuccessful() || response.body() == null) {
-                            Toast.makeText(Registrar.this, "Error de red", Toast.LENGTH_SHORT).show();
+                ApiService api = ApiClient.get().create(ApiService.class);
+                UserRegisterRequest body = new UserRegisterRequest(
+                        etNombre.getText().toString().trim(),
+                        etApellido.getText().toString().trim(),
+                        etCelular.getText().toString().trim(),
+                        etUsuarioCorreo.getText().toString().trim(),  // email o username
+                        etContrasena.getText().toString()             // texto plano (modo demo)
+                );
+
+                api.registerUser(body).enqueue(new Callback<ApiResponse<UserData>>() {
+                    @Override public void onResponse(Call<ApiResponse<UserData>> call, Response<ApiResponse<UserData>> resp) {
+                        if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok) {
+                            String mensaje = (resp.body()!=null && resp.body().error!=null) ? resp.body().error : "Registro fallido";
+                            Toast.makeText(Registrar.this, mensaje, Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        ApiResponse<UserData> res = response.body();
-                        if (!res.ok) {
-                            Toast.makeText(Registrar.this, res.error != null ? res.error : "No se pudo registrar", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        Toast.makeText(Registrar.this, "¡Registro exitoso!", Toast.LENGTH_SHORT).show();
+                        UserData u = resp.body().data;
+                        Toast.makeText(Registrar.this, "Registrado: " + u.first_name + " " + u.last_name, Toast.LENGTH_SHORT).show();
                         finish(); // vuelve al login
                     }
 
-                    @Override
-                    public void onFailure(Call<ApiResponse<UserData>> call, Throwable t) {
-                        btnRegistrarCuenta.setEnabled(true);
-                        Toast.makeText(Registrar.this, "Fallo: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    @Override public void onFailure(Call<ApiResponse<UserData>> call, Throwable t) {
+                        Toast.makeText(Registrar.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

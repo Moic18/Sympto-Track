@@ -1,42 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/root_detalle_paciente"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Doctor.DetallePaciente">
+    android:padding="16dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_nombre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_apellido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Apellido" />
-
-        <TextView
-            android:id="@+id/tv_usuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Usuario" />
-
-        <TextView
-            android:id="@+id/tv_notas"
+        <!-- Tarjeta con datos personales y espacio de logo -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Notas:" />
+            android:layout_marginBottom="12dp">
 
+            <LinearLayout
+                android:padding="16dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Espacio para logo (lo agregarás luego) -->
+                <ImageView
+                    android:id="@+id/img_logo"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:contentDescription="Logo"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:layout_marginRight="12dp"/>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_nombre_detalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre Apellido"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_info_contacto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="email@ejemplo.com · 3001234567"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notas del paciente"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_notas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
     </LinearLayout>
 </ScrollView>

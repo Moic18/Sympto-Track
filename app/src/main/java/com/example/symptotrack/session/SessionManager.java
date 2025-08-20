@@ -4,28 +4,25 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SessionManager {
-    private static final String PREF = "session";
-    private static final String K_ROLE = "role";
-    private static final String K_ID = "id";
-    private static final String K_NAME = "name";
-
     private final SharedPreferences sp;
 
     public SessionManager(Context ctx) {
-        sp = ctx.getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        sp = ctx.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
 
-    public void save(String role, int id, String fullName) {
-        sp.edit()
-                .putString(K_ROLE, role)
-                .putInt(K_ID, id)
-                .putString(K_NAME, fullName)
-                .apply();
+    public void save(String role, long id) {
+        sp.edit().putString("role", role).putLong("id", id).apply();
     }
 
-    public String role() { return sp.getString(K_ROLE, null); }
-    public int id() { return sp.getInt(K_ID, -1); }
-    public String name() { return sp.getString(K_NAME, null); }
+    // Alias usados por tu código actual:
+    public String role() { return sp.getString("role", null); }
+    public long id()     { return sp.getLong("id", -1); }
 
+    // Si prefieres getters "clásicos":
+    public String getRole() { return role(); }
+    public long getId()     { return id(); }
+
+    public boolean isUser()   { return "user".equalsIgnoreCase(role()); }
+    public boolean isDoctor() { return "doctor".equalsIgnoreCase(role()); }
     public void clear() { sp.edit().clear().apply(); }
 }

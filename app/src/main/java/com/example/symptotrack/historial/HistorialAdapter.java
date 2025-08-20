@@ -100,7 +100,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView tv;
         HeaderVH(@NonNull View itemView) {
             super(itemView);
-            tv = itemView.findViewById(R.id.tv_header_fecha);
+            tv = itemView.findViewById(R.id.tvHeaderDate);
         }
         void bind(HistHeader h) {
             tv.setText(h.label);

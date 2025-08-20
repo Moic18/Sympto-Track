@@ -17,6 +17,7 @@ import com.example.symptotrack.historial.HistEntry;
 import com.example.symptotrack.historial.HistHeader;
 import com.example.symptotrack.historial.HistItem;
 import com.example.symptotrack.historial.HistorialAdapter;
+import com.example.symptotrack.net.ApiClient;
 import com.example.symptotrack.net.ApiService;
 import com.example.symptotrack.net.dto.ApiResponse;
 import com.example.symptotrack.net.dto.SymptomEntry;
@@ -55,11 +56,13 @@ public class Historial extends AppCompatActivity {
     private TextView emptyView;
     private ProgressBar progress;
     private HistorialAdapter adapter;
+    private ApiService api;
 
     // formatos API
     private final SimpleDateFormat dfDate   = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private final SimpleDateFormat dfTimeIn = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private final SimpleDateFormat dfTimeOut= new SimpleDateFormat("HH:mm",    Locale.getDefault());
+
 
     // último rango aplicado (para limpiar rápidamente)
     private String lastFrom = null, lastTo = null;
@@ -82,6 +85,8 @@ public class Historial extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         adapter = new HistorialAdapter();
         rv.setAdapter(adapter);
+        // prepara retrofit
+        api = ApiClient.get().create(ApiService.class);
 
         // Cargar (sin rango)
         cargarHistorial(null, null);
@@ -95,6 +100,7 @@ public class Historial extends AppCompatActivity {
                 updateEmptyStateAfterFilter();
             }
         });
+
 
         // Selector de rango de fechas
         btnRango.setOnClickListener(v -> abrirRangoFechas());
@@ -192,7 +198,7 @@ public class Historial extends AppCompatActivity {
         setLoading(true);
         showEmpty(false);
 
-        ApiService.api().listSymptoms(sm.id(), from, to).enqueue(new retrofit2.Callback<ApiResponse<List<SymptomEntry>>>() {
+        api.listSymptoms(sm.id(), from, to).enqueue(new retrofit2.Callback<ApiResponse<List<SymptomEntry>>>() {
             @Override
             public void onResponse(retrofit2.Call<ApiResponse<List<SymptomEntry>>> call,
                                    retrofit2.Response<ApiResponse<List<SymptomEntry>>> response) {

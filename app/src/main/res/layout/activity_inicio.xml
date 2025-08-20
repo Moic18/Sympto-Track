@@ -51,4 +51,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/btn_compartir_doctor"
+        android:layout_width="121dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="Compartir con doctor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_historial" />
 </androidx.constraintlayout.widget.ConstraintLayout>
