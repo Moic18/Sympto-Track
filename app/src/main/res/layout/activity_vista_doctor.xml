@@ -7,4 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".Doctor.Vista_doctor">
 
+    <Button
+        android:id="@+id/btn_ver_pacientes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Ver pacientes"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_placeholder_notas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Aquí se mostrarán las notas compartidas por los pacientes."
+        app:layout_constraintTop_toBottomOf="@id/btn_ver_pacientes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
