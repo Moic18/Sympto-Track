@@ -62,7 +62,7 @@ public class ListaPacientes extends AppCompatActivity {
                 }
                 List<PatientItem> ui = new ArrayList<>();
                 for (PatientSummaryDto s : resp.body().data) {
-                    ui.add(new PatientItem((int)s.patient_id, s.patient_fullname, s.last_shared_date));
+                    ui.add(new PatientItem(s.patient_id, s.patient_fullname, s.last_shared_date));
                 }
                 adapter.submit(ui);
             }
