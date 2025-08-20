@@ -16,6 +16,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.example.symptotrack.Doctor.Vista_doctor;
 
+import com.example.symptotrack.net.ApiService;
+import com.example.symptotrack.net.dto.*;
+import com.example.symptotrack.session.SessionManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextInputEditText txt_usuario, txt_contrasena;
@@ -34,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        txt_usuario     = findViewById(R.id.txt_usuario);
-        txt_contrasena  = findViewById(R.id.txt_contrasena);
-        ly_usuario      = findViewById(R.id.ly_usuario);
-        ly_contrasena   = findViewById(R.id.ly_contrasena);
-        btn_ingresar    = findViewById(R.id.btn_ingresar);
+        txt_usuario = findViewById(R.id.txt_usuario);
+        txt_contrasena = findViewById(R.id.txt_contrasena);
+        ly_usuario = findViewById(R.id.ly_usuario);
+        ly_contrasena = findViewById(R.id.ly_contrasena);
+        btn_ingresar = findViewById(R.id.btn_ingresar);
         btn_registrarse = findViewById(R.id.btn_registrarse);
 
         btn_ingresar.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             ly_contrasena.setError(null);
         }
 
-        if(!usuario.isEmpty() && !contrasena.isEmpty() ){
+        if (!usuario.isEmpty() && !contrasena.isEmpty()) {
             iniciarSesion();
         }
 
@@ -88,16 +96,48 @@ public class MainActivity extends AppCompatActivity {
         String usuario = txt_usuario.getText() != null ? txt_usuario.getText().toString().trim() : "";
         String contrasena = txt_contrasena.getText() != null ? txt_contrasena.getText().toString().trim() : "";
 
-        if ("prueba".equals(usuario) && "0000".equals(contrasena)) {
-            Intent intent = new Intent(MainActivity.this, Inicio.class);
-            startActivity(intent);
-        } else if ("doctor".equals(usuario) && "0000".equals(contrasena)) {
-            Intent intent = new Intent(MainActivity.this, Vista_doctor.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-        }
-    }
+        // role: si quieres que la API decida (primero user, luego doctor), envía null:
+        LoginRequest body = new LoginRequest(usuario, contrasena, null);
 
+        btn_ingresar.setEnabled(false);
+
+        ApiService.api().login(body).enqueue(new Callback<ApiResponse<LoginData>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<LoginData>> call, Response<ApiResponse<LoginData>> response) {
+                btn_ingresar.setEnabled(true);
+                if (!response.isSuccessful() || response.body() == null) {
+                    Toast.makeText(MainActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ApiResponse<LoginData> res = response.body();
+                if (!res.ok) {
+                    Toast.makeText(MainActivity.this, res.error != null ? res.error : "Credenciales inválidas", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                LoginData d = res.data;
+                // Guardar sesión
+                SessionManager sm = new SessionManager(MainActivity.this);
+                sm.save(d.role, d.id, d.first_name + " " + d.last_name);
+
+                // Navegar según rol
+                if ("user".equalsIgnoreCase(d.role)) {
+                    startActivity(new Intent(MainActivity.this, Inicio.class));
+                } else if ("doctor".equalsIgnoreCase(d.role)) {
+                    startActivity(new Intent(MainActivity.this, com.example.symptotrack.Doctor.Vista_doctor.class));
+                } else {
+                    Toast.makeText(MainActivity.this, "Rol desconocido", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<LoginData>> call, Throwable t) {
+                btn_ingresar.setEnabled(false);
+                btn_ingresar.setEnabled(true);
+                Toast.makeText(MainActivity.this, "Fallo: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
 
 }

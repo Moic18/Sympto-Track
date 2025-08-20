@@ -17,6 +17,13 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import com.example.symptotrack.net.ApiService;
+import com.example.symptotrack.net.dto.*;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Registrar extends AppCompatActivity {
 
     private TextInputLayout tilNombre, tilApellido, tilCelular, tilUsuarioCorreo, tilContrasena, tilConfirmarContrasena;
@@ -36,13 +43,43 @@ public class Registrar extends AppCompatActivity {
 
         bindViews();
 
-        btnRegistrarCuenta.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                if (validarFormulario()) {
-                    Toast.makeText(Registrar.this, getString(R.string.msg_registro_valido), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Registrar.this, MainActivity.class);
-                    startActivity(intent);
-                }
+        btnRegistrarCuenta.setOnClickListener(v -> {
+            if (validarFormulario()) {
+                String nombre = getText(etNombre);
+                String apellido = getText(etApellido);
+                String celular = getText(etCelular);
+                String usuarioCorreo = getText(etUsuarioCorreo); // email o username
+                String contrasena = getText(etContrasena);
+
+                RegisterUserRequest body = new RegisterUserRequest(
+                        nombre, apellido, celular, usuarioCorreo, contrasena
+                );
+
+                btnRegistrarCuenta.setEnabled(false);
+
+                ApiService.api().registerUser(body).enqueue(new Callback<ApiResponse<UserData>>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse<UserData>> call, Response<ApiResponse<UserData>> response) {
+                        btnRegistrarCuenta.setEnabled(true);
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Toast.makeText(Registrar.this, "Error de red", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        ApiResponse<UserData> res = response.body();
+                        if (!res.ok) {
+                            Toast.makeText(Registrar.this, res.error != null ? res.error : "No se pudo registrar", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(Registrar.this, "¡Registro exitoso!", Toast.LENGTH_SHORT).show();
+                        finish(); // vuelve al login
+                    }
+
+                    @Override
+                    public void onFailure(Call<ApiResponse<UserData>> call, Throwable t) {
+                        btnRegistrarCuenta.setEnabled(true);
+                        Toast.makeText(Registrar.this, "Fallo: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

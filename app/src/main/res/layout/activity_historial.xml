@@ -75,6 +75,28 @@
             android:layout_weight="1"
             android:clipToPadding="false"
             android:paddingBottom="8dp"/>
+
+        <!-- Estado vacío -->
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sin registros en este período"
+            android:gravity="center"
+            android:paddingTop="24dp"
+            android:paddingBottom="24dp"
+            android:textSize="14sp"
+            android:visibility="gone"/>
+
+        <!-- Loader -->
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

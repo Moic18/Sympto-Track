@@ -21,6 +21,14 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.example.symptotrack.net.ApiService;
+import com.example.symptotrack.net.dto.*;
+import com.example.symptotrack.session.SessionManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Regis_sintomas extends AppCompatActivity {
 
     private TextInputLayout tilNombre, tilFecha, tilNotas;
@@ -108,18 +116,54 @@ public class Regis_sintomas extends AppCompatActivity {
         limpiarErrores();
 
         String nombre = getText(etNombre);
-        int intensidad = Math.round(sliderIntensidad.getValue()); // 0..10
-        String fecha = getText(etFecha);
+        int intensidad = Math.round(sliderIntensidad.getValue());
+        String fecha = getText(etFecha); // "yyyy-MM-dd" si usas df así
         String notas = getText(etNotas);
 
         boolean ok = true;
         if (nombre.isEmpty()) { tilNombre.setError(getString(R.string.error_campo_obligatorio)); ok = false; }
         if (fecha.isEmpty())  { tilFecha.setError(getString(R.string.error_campo_obligatorio));  ok = false; }
-
         if (!ok) return;
 
-        String resumen = "Síntoma: " + nombre + " | Intensidad: " + intensidad +
-                " | Fecha: " + fecha + " | Notas: " + notas;
-        Toast.makeText(this, getString(R.string.msg_guardado_ok) + "\n" + resumen, Toast.LENGTH_SHORT).show();
+        // user_id de la sesión
+        SessionManager sm = new SessionManager(this);
+        if (!"user".equalsIgnoreCase(sm.role()) || sm.id() <= 0) {
+            Toast.makeText(this, "Inicia sesión como usuario para registrar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Hora opcional: si no tienes, manda null
+        SymptomRequest body = new SymptomRequest(
+                sm.id(), nombre, intensidad, fecha, null, notas
+        );
+
+        btnGuardar.setEnabled(false);
+
+        ApiService.api().createSymptom(body).enqueue(new Callback<ApiResponse<CreatedId>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<CreatedId>> call, Response<ApiResponse<CreatedId>> response) {
+                btnGuardar.setEnabled(true);
+                if (!response.isSuccessful() || response.body() == null) {
+                    Toast.makeText(Regis_sintomas.this, "Error de red", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ApiResponse<CreatedId> res = response.body();
+                if (!res.ok) {
+                    Toast.makeText(Regis_sintomas.this, res.error != null ? res.error : "No se guardó", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(Regis_sintomas.this, "Síntoma guardado (id " + res.data.id + ")", Toast.LENGTH_SHORT).show();
+                // Opcional: limpiar campos
+                etNombre.setText("");
+                etNotas.setText("");
+                sliderIntensidad.setValue(0f);
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<CreatedId>> call, Throwable t) {
+                btnGuardar.setEnabled(true);
+                Toast.makeText(Regis_sintomas.this, "Fallo: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
