@@ -13,6 +13,12 @@
         android:theme="@style/Theme.SymptoTrack"
         tools:targetApi="31">
         <activity
+            android:name=".Doctor.DetallePaciente"
+            android:exported="false" />
+        <activity
+            android:name=".Doctor.ListaPacientes"
+            android:exported="false" />
+        <activity
             android:name=".Doctor.Vista_doctor"
             android:exported="false" />
         <activity
