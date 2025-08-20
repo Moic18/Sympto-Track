@@ -49,6 +49,12 @@ public class DetallePaciente extends AppCompatActivity {
         rvNotas.setAdapter(adapter);
 
         long patientId = getIntent().getLongExtra("patient_id", -1);
+        if (patientId < 0) {
+            Toast.makeText(this, "ID de paciente inválido", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         String patientName = getIntent().getStringExtra("patient_name");
         tvNombre.setText(patientName != null ? patientName : "Paciente");
 
