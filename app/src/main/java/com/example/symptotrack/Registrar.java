@@ -65,19 +65,19 @@ public class Registrar extends AppCompatActivity {
                         etContrasena.getText().toString()             // texto plano (modo demo)
                 );
 
-                api.registerUser(body).enqueue(new Callback<ApiResponse<UserData>>() {
-                    @Override public void onResponse(Call<ApiResponse<UserData>> call, Response<ApiResponse<UserData>> resp) {
+                api.registerUser(body).enqueue(new Callback<ApiResponse<CreatedId>>() {
+                    @Override public void onResponse(Call<ApiResponse<CreatedId>> call, Response<ApiResponse<CreatedId>> resp) {
                         if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok) {
                             String mensaje = (resp.body()!=null && resp.body().error!=null) ? resp.body().error : "Registro fallido";
                             Toast.makeText(Registrar.this, mensaje, Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        UserData u = resp.body().data;
-                        Toast.makeText(Registrar.this, "Registrado: " + u.first_name + " " + u.last_name, Toast.LENGTH_SHORT).show();
+                        CreatedId u = resp.body().data;
+                        Toast.makeText(Registrar.this, "Registrado (id " + u.id + ")", Toast.LENGTH_SHORT).show();
                         finish(); // vuelve al login
                     }
 
-                    @Override public void onFailure(Call<ApiResponse<UserData>> call, Throwable t) {
+                    @Override public void onFailure(Call<ApiResponse<CreatedId>> call, Throwable t) {
                         Toast.makeText(Registrar.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

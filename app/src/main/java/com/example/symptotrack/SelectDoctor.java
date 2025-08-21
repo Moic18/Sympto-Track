@@ -72,7 +72,8 @@ public class SelectDoctor extends AppCompatActivity {
                 }
                 List<DoctorItem> ui = new ArrayList<>();
                 for (DoctorDto d : resp.body().data) {
-                    ui.add(new DoctorItem(d.doctor_id, d.nombreCompleto(), d.email));
+                    String nombreCompleto = d.first_name + " " + d.last_name;
+                    ui.add(new DoctorItem(d.doctor_id, nombreCompleto, d.email));
                 }
                 adapter.submit(ui);
             }
