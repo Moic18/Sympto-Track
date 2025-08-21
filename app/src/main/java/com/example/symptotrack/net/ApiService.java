@@ -86,8 +86,7 @@ public interface ApiService {
     // Listar pacientes que compartieron con un doctor
     @GET("doctors/{doctor_id}/patients")
     Call<ApiResponse<List<PatientSummaryDto>>> listPatientsForDoctor(
-            @Header("Authorization") String token,
-            @Path("doctor_id") int doctorId
+            @Path("doctor_id") long doctorId
     );
 
     @GET("patients/{patient_id}/detail")
