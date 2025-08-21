@@ -2,12 +2,7 @@ package com.example.symptotrack.net.dto;
 
 public class PatientSummaryDto {
     public long patient_id;
-    public String first_name;
-    public String last_name;
-    public String email;
-    public String username;
-
-    // opcionales (si tu backend los devuelve)
-    public String last_note;   // última nota compartida
-    public String last_fecha;  // "yyyy-MM-dd"
+    public String patient_fullname;   // viene así del backend
+    public String last_shared_date;   // "YYYY-MM-DD"
+    public int shares_count;          // cantidad de veces compartido
 }

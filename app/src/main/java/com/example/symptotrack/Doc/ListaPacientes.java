@@ -57,34 +57,25 @@ public class ListaPacientes extends AppCompatActivity {
             Toast.makeText(this, "ID de doctor inválido. Vuelva a iniciar sesión.", Toast.LENGTH_SHORT).show();
             return;
         }
-        String token = session.token();
-        if (token == null || token.isEmpty()) {
-            Toast.makeText(this, "Token inválido. Vuelva a iniciar sesión.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        api.listPatientsForDoctor(token, doctorId)
+
+        api.listPatientsForDoctor(doctorId)
                 .enqueue(new retrofit2.Callback<ApiResponse<java.util.List<PatientSummaryDto>>>() {
                     @Override
                     public void onResponse(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call,
                                            retrofit2.Response<ApiResponse<java.util.List<PatientSummaryDto>>> resp) {
-                        if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok || resp.body().data == null) {
-                            String msg = resp.body() != null && resp.body().error != null
-                                    ? resp.body().error
-                                    : "No se pudo cargar los pacientes";
-                            Toast.makeText(ListaPacientes.this, msg, Toast.LENGTH_SHORT).show();
+                        if (!resp.isSuccessful() || resp.body()==null || !resp.body().ok || resp.body().data==null) {
+                            Toast.makeText(ListaPacientes.this,"No se pudo cargar los pacientes",Toast.LENGTH_SHORT).show();
                             return;
                         }
                         java.util.List<PatientSummaryDto> lista = resp.body().data;
                         java.util.List<PatientItem> items = new ArrayList<>();
                         for (PatientSummaryDto dto : lista) {
-                            String nombre = ((dto.first_name != null ? dto.first_name : "") + " " +
-                                    (dto.last_name != null ? dto.last_name : "")).trim();
-                            String fecha = dto.last_fecha != null ? dto.last_fecha : "";
+                            String nombre = dto.patient_fullname != null ? dto.patient_fullname : "";
+                            String fecha  = dto.last_shared_date != null ? dto.last_shared_date : "-";
                             items.add(new PatientItem(dto.patient_id, nombre, fecha));
                         }
                         adapter.submit(items);
                     }
-
                     @Override
                     public void onFailure(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call, Throwable t) {
                         Toast.makeText(ListaPacientes.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -92,4 +83,5 @@ public class ListaPacientes extends AppCompatActivity {
                 });
 
     }
+
 }

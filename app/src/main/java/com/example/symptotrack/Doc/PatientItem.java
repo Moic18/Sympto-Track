@@ -1,13 +1,13 @@
 package com.example.symptotrack.Doc;
 
 public class PatientItem {
-    public final long id;
-    public final String nombreCompleto;
-    public final String ultimoEnvio; // fecha texto
+    public long id;
+    public String nombreCompleto;
+    public String ultimaFecha;
 
-    public PatientItem(long id, String nombreCompleto, String ultimoEnvio) {
+    public PatientItem(long id, String nombreCompleto, String ultimaFecha) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
-        this.ultimoEnvio = ultimoEnvio;
+        this.ultimaFecha = ultimaFecha;
     }
 }

@@ -85,15 +85,16 @@ public interface ApiService {
 
     // Listar pacientes que compartieron con un doctor
     @GET("doctors/{doctor_id}/patients")
-    Call<ApiResponse<List<PatientSummaryDto>>> listPatientsForDoctor(
-            @Path("doctor_id") long doctorId
+    Call<ApiResponse<java.util.List<PatientSummaryDto>>> listPatientsForDoctor(
+            @Path("doctor_id") int doctorId
     );
 
-    @GET("patients/{patient_id}/detail")
+    @GET("doctors/{doctor_id}/patients/{patient_id}")
     Call<ApiResponse<PatientDetailDto>> patientDetail(
-            @Query("doctor_id") int doctorId,
+            @Path("doctor_id") int doctorId,
             @Path("patient_id") long patientId
     );
+
 
 
 

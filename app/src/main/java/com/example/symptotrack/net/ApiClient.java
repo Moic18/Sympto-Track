@@ -1,30 +1,31 @@
 package com.example.symptotrack.net;
 
-import com.example.symptotrack.BuildConfig;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-
     private static Retrofit retrofit;
 
     public static Retrofit get() {
         if (retrofit == null) {
-            HttpLoggingInterceptor log = new HttpLoggingInterceptor();
-            log.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient http = new OkHttpClient.Builder()
-                    .addInterceptor(log)
+            // 1. Crear interceptor
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            // 2. Cliente con logging
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(logging)
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_URL)
-                    .client(http)
+                    .baseUrl("http://10.0.2.2:8000/") // si usas emulador Android
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
                     .build();
         }
         return retrofit;
     }
 }
+

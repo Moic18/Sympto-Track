@@ -1,19 +1,25 @@
+// com/example/symptotrack/net/dto/PatientDetailDto.java
 package com.example.symptotrack.net.dto;
 
 import java.util.List;
 
 public class PatientDetailDto {
-    public long id;
-    public String first_name;
-    public String last_name;
-    public String email;
-    public String username;
+    public Patient patient;
+    public List<Note> notes;
 
-    public List<NoteDto> notes;
-
-    public static class NoteDto {
+    public static class Patient {
         public long id;
-        public String note;
-        public String fecha;
+        public String first_name;
+        public String last_name;
+        public String email;
+        public String phone;
+        public String username;
+    }
+
+    public static class Note {
+        public long id;
+        public String fecha;       // "yyyy-MM-dd"
+        public String note;        // texto
+        public String created_at;  // opcional
     }
 }
