@@ -53,6 +53,10 @@ public class ListaPacientes extends AppCompatActivity {
             return;
         }
         int doctorId = (int) session.getId();
+        if (doctorId <= 0) {
+            Toast.makeText(this, "ID de doctor inválido. Vuelva a iniciar sesión.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         api.listPatientsForDoctor(doctorId)
                 .enqueue(new retrofit2.Callback<ApiResponse<java.util.List<PatientSummaryDto>>>() {
                     @Override
