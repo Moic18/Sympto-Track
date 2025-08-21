@@ -59,7 +59,10 @@ public class ListaPacientes extends AppCompatActivity {
                     public void onResponse(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call,
                                            retrofit2.Response<ApiResponse<java.util.List<PatientSummaryDto>>> resp) {
                         if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok || resp.body().data == null) {
-                            Toast.makeText(ListaPacientes.this, "No se pudo cargar los pacientes", Toast.LENGTH_SHORT).show();
+                            String msg = resp.body() != null && resp.body().error != null
+                                    ? resp.body().error
+                                    : "No se pudo cargar los pacientes";
+                            Toast.makeText(ListaPacientes.this, msg, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         java.util.List<PatientSummaryDto> lista = resp.body().data;
