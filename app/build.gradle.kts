@@ -16,6 +16,22 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "environment"
+    productFlavors {
+        create("emulator") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8000/\"")
+        }
+        create("device") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"http://192.168.0.13:8000/\"")
+        }
+        create("production") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"https://symptotrack.example.com/\"")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,6 +44,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
