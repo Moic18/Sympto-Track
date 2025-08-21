@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class DetallePaciente extends AppCompatActivity {
 
-    private TextView tvNombre, tvInfo, tvEmail, tvUsername;
+    private TextView tvNombre, tvInfo;
     private ImageView imgLogo;
     private RecyclerView rvNotas;
     private NotesAdapter adapter;
@@ -76,8 +76,7 @@ public class DetallePaciente extends AppCompatActivity {
                 }
                 PatientDetailDto d = resp.body().data;
                 tvNombre.setText(d.first_name + " " + d.last_name);
-                tvEmail.setText(d.email);
-                tvUsername.setText(d.username);
+                tvInfo.setText(d.email + " · " + d.username);
 
 
                 List<NoteItem> notes = new ArrayList<>();
