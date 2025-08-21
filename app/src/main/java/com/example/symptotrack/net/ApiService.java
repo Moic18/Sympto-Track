@@ -66,12 +66,32 @@ public interface ApiService {
     @POST("patients/share")
     Call<ApiResponse<ShareResponse>> shareWithDoctor(@Body ShareRequest body);
 
+    // --- Doctors & Symptoms ---
+    // Listado de doctores disponibles para que un usuario comparta su historial
+    @GET("doctors")
+    Call<ApiResponse<List<DoctorDto>>> listDoctors();
+
+    // Registrar un nuevo síntoma
+    @POST("symptoms")
+    Call<ApiResponse<CreatedId>> createSymptom(@Body SymptomRequest body);
+
+    // Obtener historial de síntomas de un usuario en un rango de fechas
+    @GET("users/{user_id}/symptoms")
+    Call<ApiResponse<List<SymptomEntry>>> listSymptoms(
+            @Path("user_id") long userId,
+            @Query("from") String from,
+            @Query("to") String to
+    );
+
     // Listar pacientes que compartieron con un doctor
     @GET("doctors/{doctor_id}/patients")
     Call<ApiResponse<List<PatientSummaryDto>>> listPatientsForDoctor(@Path("doctor_id") int doctorId);
 
     @GET("patients/{patient_id}/detail")
-    Call<ApiResponse<PatientDetailDto>> patientDetail(@Path("patient_id") long patientId, long id);
+    Call<ApiResponse<PatientDetailDto>> patientDetail(
+            @Query("doctor_id") int doctorId,
+            @Path("patient_id") long patientId
+    );
 
 
 
