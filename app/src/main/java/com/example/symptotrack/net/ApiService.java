@@ -50,7 +50,7 @@ public interface ApiService {
     Call<ApiResponse<GenericOk>> adminSetDoctorStatus(
             @Header("X-Admin-User") String adminUser,
             @Header("X-Admin-Pass") String adminPass,
-            @Path("doctor_id") int doctorId,
+            @Path("doctor_id") long doctorId,
             @Body StatusRequest body
     );
 
@@ -85,11 +85,11 @@ public interface ApiService {
 
     // Listar pacientes que compartieron con un doctor
     @GET("doctors/{doctor_id}/patients")
-    Call<ApiResponse<List<PatientSummaryDto>>> listPatientsForDoctor(@Path("doctor_id") int doctorId);
+    Call<ApiResponse<List<PatientSummaryDto>>> listPatientsForDoctor(@Path("doctor_id") long doctorId);
 
     @GET("patients/{patient_id}/detail")
     Call<ApiResponse<PatientDetailDto>> patientDetail(
-            @Query("doctor_id") int doctorId,
+            @Query("doctor_id") long doctorId,
             @Path("patient_id") long patientId
     );
 

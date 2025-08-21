@@ -52,7 +52,7 @@ public class ListaPacientes extends AppCompatActivity {
             Toast.makeText(this, "Debes iniciar sesión como doctor", Toast.LENGTH_SHORT).show();
             return;
         }
-        int doctorId = (int) session.getId();
+        long doctorId = session.getId();
         if (doctorId <= 0) {
             Toast.makeText(this, "ID de doctor inválido. Vuelva a iniciar sesión.", Toast.LENGTH_SHORT).show();
             return;
