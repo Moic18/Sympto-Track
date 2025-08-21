@@ -16,7 +16,6 @@ import com.example.symptotrack.net.dto.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
@@ -54,18 +53,24 @@ public class ListaPacientes extends AppCompatActivity {
             return;
         }
         int doctorId = (int) session.getId();
-        ApiService api = ApiClient.get().create(ApiService.class);
         api.listPatientsForDoctor(doctorId)
                 .enqueue(new retrofit2.Callback<ApiResponse<java.util.List<PatientSummaryDto>>>() {
                     @Override
                     public void onResponse(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call,
                                            retrofit2.Response<ApiResponse<java.util.List<PatientSummaryDto>>> resp) {
-                        if (!resp.isSuccessful() || resp.body()==null || !resp.body().ok) {
+                        if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok) {
                             // manejar error...
                             return;
                         }
                         java.util.List<PatientSummaryDto> lista = resp.body().data;
-                        // TODO: pasar 'lista' a tu adapter (RecyclerView)
+                        java.util.List<PatientItem> items = new ArrayList<>();
+                        for (PatientSummaryDto dto : lista) {
+                            String nombre = ((dto.first_name != null ? dto.first_name : "") + " " +
+                                    (dto.last_name != null ? dto.last_name : "")).trim();
+                            String fecha = dto.last_fecha != null ? dto.last_fecha : "";
+                            items.add(new PatientItem(dto.patient_id, nombre, fecha));
+                        }
+                        adapter.submit(items);
                     }
 
                     @Override
