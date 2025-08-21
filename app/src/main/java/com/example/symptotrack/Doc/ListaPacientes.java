@@ -58,8 +58,8 @@ public class ListaPacientes extends AppCompatActivity {
                     @Override
                     public void onResponse(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call,
                                            retrofit2.Response<ApiResponse<java.util.List<PatientSummaryDto>>> resp) {
-                        if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok) {
-                            // manejar error...
+                        if (!resp.isSuccessful() || resp.body() == null || !resp.body().ok || resp.body().data == null) {
+                            Toast.makeText(ListaPacientes.this, "No se pudo cargar los pacientes", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         java.util.List<PatientSummaryDto> lista = resp.body().data;
@@ -75,7 +75,7 @@ public class ListaPacientes extends AppCompatActivity {
 
                     @Override
                     public void onFailure(retrofit2.Call<ApiResponse<java.util.List<PatientSummaryDto>>> call, Throwable t) {
-                        // manejar fallo de red...
+                        Toast.makeText(ListaPacientes.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
